@@ -1,4 +1,4 @@
-# SaNa - Toddler Main: green puppy PWA icon
+# SaNaToddler Main: green puppy PWA icon
 
 Current Android correction: **R2**, described below. The first edge-frame design can lose its green border when Android masks it.
 
@@ -39,3 +39,8 @@ Mode: built-in image generation, editing the approved Main puppy tile. Master co
 Exact generation prompt:
 
 > Use case: precise-object-edit. Asset type: production PWA launcher icon for SaNa - Toddler MAIN only. Edit the attached approved puppy tile. Preserve the same puppy exactly: the white and brown silky fur, both full floppy ears, glossy eyes, black nose, tiny pink tongue, the pink-and-blue bow and hair tuft, and the full visible furry chest. Preserve the composition, expression, warm cream interior, square canvas, and recognizable artwork. Change only the existing thin GOLD OUTER FRAME into a clearly visible, thick EMERALD-GREEN rounded-square border, about 7 percent of the canvas width, smoothly following the existing rounded tile shape. Keep the entire puppy inside the border without cropping any hair, bow, ears, face or chest. Make the green strong and easy to distinguish at a tiny phone icon size, including when the launcher uses a circular mask. Keep the canvas fully opaque, with green reaching the outer edge and rounded corners blending into a pale green outer background. Do not change the puppy into a different animal or style. No words, letters, numbers, labels, watermarks, extra objects, duplicate tiles, size annotations, buttons, or mockup scene. Output one clean square app icon only.
+
+
+## Compact installed-app name
+
+Main manifest name and short name are now exactly `SaNaToddler`, without spaces or a hyphen. Apple/browser/share titles and installation guidance use the same spelling. The existing green icon files, dedicated maskable icon, circular welcome illustration, manifest ID, scope, games and saved data remain unchanged. Cache `sana-little-hands-live-v199-sanatoddler-name` refreshes naming metadata. Fresh entry after publication: https://kidsmathsmatrixpuzzle.github.io/toddler-games-/install-sanatoddler-v1.99.html . Native launcher name updates remain managed by Chrome. Seventeen web/cache integration checks and ten previous-release upgrade checks passed on Naren-PC.

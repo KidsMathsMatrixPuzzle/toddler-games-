@@ -1,4 +1,4 @@
-# SaNa - Toddler Live v1.99
+# SaNaToddler Live v1.99
 
 Current promotion: see [LIVE-V199-RELEASE.md](LIVE-V199-RELEASE.md). Main keeps its explicit `/toddler-games-/` installation identity.
 
