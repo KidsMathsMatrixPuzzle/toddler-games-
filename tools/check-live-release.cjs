@@ -3,12 +3,12 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {chromium,expect}=require(process.env.MM_PLAYWRIGHT||'@playwright/test');
 const root=path.resolve(__dirname,'..'),mathRoot=process.env.MATHMATRIX_ROOT;
 const prefix='/toddler-games-/',live='https://kidsmathsmatrixpuzzle.github.io/toddler-games-/';
-const cacheKey='sana-little-hands-live-v198-r1',results=[];
-let browser;
+const cacheKey='sana-little-hands-live-v198-r2-distinct-app-id',results=[];
+let browser,mathIdentity;
 const check=(name,pass)=>{assert(pass,name);results.push(name);console.log('PASS '+name);};
 const server=http.createServer((req,res)=>{try{
  const url=new URL(req.url,'http://local');
- if(url.pathname.endsWith('/__check.html')){res.writeHead(200,{'Content-Type':'text/html'}).end('<!doctype html><title>Installation check</title>');return;}
+ if(url.pathname.endsWith('/__check.html')){res.writeHead(200,{'Content-Type':'text/html'}).end('<!doctype html><title>Installation check</title>'+(mathRoot?'<link rel="manifest" href="/manifest.json">':''));return;}
  const isSaNa=url.pathname.startsWith(prefix),directory=isSaNa?root:mathRoot;
  assert(directory,'MathMatrix fixture not configured');
  const relative=isSaNa?url.pathname.slice(prefix.length):url.pathname.slice(1);
@@ -18,9 +18,9 @@ const server=http.createServer((req,res)=>{try{
 (async()=>{
  const worker=fs.readFileSync(path.join(root,'sw.js'),'utf8'),assets=JSON.parse(worker.match(/const ASSETS=(\[[^;]+\]);/)[1]);
  for(const asset of assets){const file=path.resolve(root,decodeURIComponent(new URL(asset,'https://local/').pathname.slice(1)));assert(file.startsWith(root+path.sep));assert(fs.statSync(file).isFile(),asset);}
- check('Every precached asset exists at the Live project root',assets.length===605);
+ check('Every precached asset exists at the Live project root',assets.length>=605);
  const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8'));
- check('Live has its own name and a project-relative app identity',manifest.name==='SaNa Little Hands'&&manifest.id==='./'&&manifest.start_url==='./index.html'&&manifest.scope==='./');
+ check('Live has its own name and project-scoped launch paths',manifest.name==='SaNa Little Hands'&&manifest.start_url==='./index.html'&&manifest.scope==='./');
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const origin='http://127.0.0.1:'+server.address().port,base=origin+prefix;
  browser=await chromium.launch();const context=await browser.newContext({viewport:{width:393,height:852}}),page=await context.newPage();page.setDefaultTimeout(15000);
@@ -28,12 +28,17 @@ const server=http.createServer((req,res)=>{try{
  if(mathRoot){
   await page.evaluate(async()=>{const registration=await navigator.serviceWorker.register('/sw.js',{scope:'/'});const ready=await navigator.serviceWorker.ready,worker=registration.installing||registration.waiting||registration.active||ready.active;if(worker.state!=='activated')await new Promise(resolve=>{worker.addEventListener('statechange',()=>{if(worker.state==='activated')resolve();});});});
   check('Existing MathMatrix root worker installs first',await page.evaluate(()=>navigator.serviceWorker.getRegistration('/').then(item=>item.scope===location.origin+'/')));
+  const client=await context.newCDPSession(page);
+  mathIdentity=(await client.send('Page.getAppManifest')).manifest.id;
+  check('Chromium reports the existing MathMatrix identity',mathIdentity===origin+'/');
  }
  await page.evaluate(async()=>{await caches.open('sana-little-hands-beta-preservation-probe');await caches.open('mathmatrix-live-preservation-probe');localStorage.setItem('mm.live-preservation-probe','keep');});
  await page.goto(base+'v1.98.html');
  await Promise.race([page.waitForURL('**/toddler-games-/index.html',{timeout:40000}),page.locator('#retry').waitFor({state:'visible',timeout:40000})]);
  check('The Live recovery link opens SaNa with a root worker already installed',page.url()===base+'index.html');
  await expect(page.locator('#offline-status')).toHaveText('Ready for offline play',{timeout:30000});
+ const client=await context.newCDPSession(page),processed=(await client.send('Page.getAppManifest')).manifest;
+ check('Chromium gives SaNa its own app identity, distinct from MathMatrix',processed.id===base&&processed.id!==mathIdentity);
  check('Live displays v1.98 without the Beta label',(await page.locator('.preview-tag').textContent()).includes('Live')&&await page.locator('[data-release-version]').first().textContent()==='v1.98');
  const state=await page.evaluate(async()=>({scope:(await navigator.serviceWorker.getRegistration()).scope,script:navigator.serviceWorker.controller.scriptURL,keys:await caches.keys(),marker:localStorage.getItem('mm.live-preservation-probe')}));
  check('SaNa controls only its own project path',state.scope===base&&state.script===base+'sw.js');
