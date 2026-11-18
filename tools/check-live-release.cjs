@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {chromium,expect}=require(process.env.MM_PLAYWRIGHT||'@playwright/test');
 const root=path.resolve(__dirname,'..'),mathRoot=process.env.MATHMATRIX_ROOT;
 const prefix='/toddler-games-/',live='https://kidsmathsmatrixpuzzle.github.io/toddler-games-/';
-const cacheKey='sana-little-hands-live-v199-puppy-circle-r2-app-name',results=[];
+const cacheKey='sana-little-hands-live-v199-green-puppy-icon',results=[];
 let browser,mathIdentity;
 const check=(name,pass)=>{assert(pass,name);results.push(name);console.log('PASS '+name);};
 const server=http.createServer((req,res)=>{try{

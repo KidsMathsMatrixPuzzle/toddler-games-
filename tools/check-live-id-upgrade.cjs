@@ -22,11 +22,11 @@ const server=http.createServer((req,res)=>{try{
  await page.locator('#play').click();await page.locator('[data-activity="puzzle"]').click();await page.locator('#puzzle-file').setInputFiles(path.join(root,'icon-192.png'));await expect(page.locator('[data-puzzle-choice]')).toHaveCount(2);
  const settings=await page.evaluate(()=>localStorage.getItem('sanaLittleHandsV1'));
  old=false;await page.goto(base+'install-live-r2.html');await page.waitForURL('**/toddler-games-/index.html',{timeout:40000});await expect(page.locator('#offline-status')).toHaveText('Ready for offline play',{timeout:30000});
- check('The fresh repair entry replaces the cached r1 application',(await page.locator('meta[name="sana-release"]').getAttribute('content'))==='sana-little-hands-live-v199-puppy-circle-r2-app-name');
+ check('The fresh repair entry replaces the cached r1 application',(await page.locator('meta[name="sana-release"]').getAttribute('content'))==='sana-little-hands-live-v199-green-puppy-icon');
  check('Chromium now computes SaNa as its own installed-app identity',(await client.send('Page.getAppManifest')).manifest.id===base);
  check('Game settings survive the identity repair',await page.evaluate(()=>localStorage.getItem('sanaLittleHandsV1'))===settings);
  const keys=await page.evaluate(()=>caches.keys());
- check('Only the previous SaNa release cache is replaced',keys.includes('sana-little-hands-live-v199-puppy-circle-r2-app-name')&&!keys.includes('sana-little-hands-live-v198-r1')&&keys.includes('mathmatrix-live-preserve-id-repair'));
+ check('Only the previous SaNa release cache is replaced',keys.includes('sana-little-hands-live-v199-green-puppy-icon')&&!keys.includes('sana-little-hands-live-v198-r1')&&keys.includes('mathmatrix-live-preserve-id-repair'));
  check('MathMatrix storage is kept',await page.evaluate(()=>localStorage.getItem('mm.identity-repair-preserve'))==='keep');
  await context.setOffline(true);await page.locator('#play').click();await page.locator('[data-activity="puzzle"]').click();await expect(page.locator('[data-puzzle-choice]')).toHaveCount(2);
  check('The original saved puzzle photo still opens offline',true);
