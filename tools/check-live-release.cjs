@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {chromium,expect}=require(process.env.MM_PLAYWRIGHT||'@playwright/test');
 const root=path.resolve(__dirname,'..'),mathRoot=process.env.MATHMATRIX_ROOT;
 const prefix='/toddler-games-/',live='https://kidsmathsmatrixpuzzle.github.io/toddler-games-/';
-const cacheKey='sana-little-hands-live-v199-green-safe-r2',results=[];
+const cacheKey='sana-little-hands-live-v199-sanatoddler-name',results=[];
 let browser,mathIdentity;
 const check=(name,pass)=>{assert(pass,name);results.push(name);console.log('PASS '+name);};
 const server=http.createServer((req,res)=>{try{
@@ -24,7 +24,7 @@ const server=http.createServer((req,res)=>{try{
  check('Welcome and game script URLs exactly match their offline entries',true);
  check('The approved circular puppy welcome has been promoted',fs.existsSync(path.join(root,'sana-puppy-welcome-circle-v199.png'))&&fs.readFileSync(path.join(root,'index.html'),'utf8').includes('data-sana-puppy'));
  const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8'));
- check('Live has its own name and project-scoped launch paths',manifest.name==='SaNa - Toddler'&&manifest.short_name==='SaNa - Toddler'&&manifest.start_url==='./index.html'&&manifest.scope==='./');
+ check('Live has its own name and project-scoped launch paths',manifest.name==='SaNaToddler'&&manifest.short_name==='SaNaToddler'&&manifest.start_url==='./index.html'&&manifest.scope==='./');
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const origin='http://127.0.0.1:'+server.address().port,base=origin+prefix;
  browser=await chromium.launch();const context=await browser.newContext({viewport:{width:393,height:852}}),page=await context.newPage();page.setDefaultTimeout(15000);
@@ -45,7 +45,7 @@ const server=http.createServer((req,res)=>{try{
  await page.screenshot({path:path.join(root,'artifacts/promotion-v199/main-welcome-phone.png')});
  await page.setViewportSize({width:1280,height:800});await page.screenshot({path:path.join(root,'artifacts/promotion-v199/main-welcome-tablet.png')});await page.setViewportSize({width:393,height:852});
  const client=await context.newCDPSession(page),processed=(await client.send('Page.getAppManifest')).manifest;
- check('Chromium gives SaNa its own app identity, distinct from MathMatrix',processed.id===base&&processed.id!==mathIdentity&&processed.name==='SaNa - Toddler');
+ check('Chromium gives SaNa its own app identity, distinct from MathMatrix',processed.id===base&&processed.id!==mathIdentity&&processed.name==='SaNaToddler');
  check('Live displays v1.99 without the Beta label',(await page.locator('.preview-tag').textContent()).includes('Live')&&await page.locator('[data-release-version]').first().textContent()==='v1.99');
  const state=await page.evaluate(async()=>({scope:(await navigator.serviceWorker.getRegistration()).scope,script:navigator.serviceWorker.controller.scriptURL,keys:await caches.keys(),marker:localStorage.getItem('mm.live-preservation-probe')}));
  check('SaNa controls only its own project path',state.scope===base&&state.script===base+'sw.js');
