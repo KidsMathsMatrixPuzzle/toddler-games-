@@ -1,4 +1,9 @@
-# SaNa Little Hands Live v1.98
+# SaNa - Toddler Live v1.99
+
+Current promotion: see [LIVE-V199-RELEASE.md](LIVE-V199-RELEASE.md). Main keeps its explicit `/toddler-games-/` installation identity.
+
+## Previous v1.98 release and identity repair
+
 
 Prepared from the approved Beta source at `grajapm-hue/toddler-games-`, commit `5278cc75e8cec6903bc478512a898c9bb53c6af0`, using only its maintained `docs/beta/` application files. The user-created README is preserved.
 
