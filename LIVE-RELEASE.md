@@ -2,6 +2,8 @@
 
 Current promotion: see [LIVE-V199-RELEASE.md](LIVE-V199-RELEASE.md). Main keeps its explicit `/toddler-games-/` installation identity.
 
+Main's subsequent green-border puppy icon revision and the remaining Android routing limitation are described in [MAIN-GREEN-ICON.md](MAIN-GREEN-ICON.md).
+
 ## Previous v1.98 release and identity repair
 
 
