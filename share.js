@@ -16,7 +16,7 @@
   button.addEventListener('click',()=>{
     const nativeData=nativeShareData();
     const message=nativeData?'Choose where to invite your group to play SaNa.':'Device sharing is unavailable here. Use WhatsApp or Copy link.';
-    window.sanaAppDialog?.('Share SaNa',`<div class="share-options"><a class="share-option whatsapp" href="${whatsapp.href}" target="_blank" rel="noopener noreferrer">WhatsApp</a><button class="share-option" type="button" id="copy-share-link">Copy link</button>${nativeData?'<button class="share-option more" type="button" id="native-share">More apps</button>':''}</div><label class="share-link">App link<input type="text" value="${url}" readonly inputmode="none"></label><p class="share-result" id="share-result" role="status">${message}</p>`,button);
+    window.sanaAppDialog?.('Share SaNa - Toddler',`<div class="share-options"><a class="share-option whatsapp" href="${whatsapp.href}" target="_blank" rel="noopener noreferrer">WhatsApp</a><button class="share-option" type="button" id="copy-share-link">Copy link</button>${nativeData?'<button class="share-option more" type="button" id="native-share">More apps</button>':''}</div><label class="share-link">App link<input type="text" value="${url}" readonly inputmode="none"></label><p class="share-result" id="share-result" role="status">${message}</p>`,button);
     const result=document.getElementById('share-result');
     const link=document.querySelector('.share-link input');
     document.getElementById('copy-share-link')?.addEventListener('click',async event=>{
