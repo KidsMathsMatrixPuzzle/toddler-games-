@@ -20,11 +20,11 @@ body{margin:0;background:#d9eff1;color:#173e35;font:18px/1.5 system-ui,sans-seri
 <script>
 // This page sits at the project path so the old Live worker cannot serve its cached welcome here.
 (()=>{
-  const appBase=new URL('./',location.href),target='sana-little-hands-live-v199-green-puppy-icon';
+  const appBase=new URL('./',location.href),target='sana-little-hands-live-v199-green-safe-r2';
   const progress=document.getElementById('progress'),retry=document.getElementById('retry');
   const android=/Android/i.test(navigator.userAgent),embeddedAndroid=android&&/(?:;\s*wv\b|Version\/4\.0)/i.test(navigator.userAgent);
   if(android){
-    const self=new URL('install-live-v1.99-green.html',location.href),chrome=document.getElementById('open-chrome');
+    const self=new URL('install-live-v1.99-green-r2.html',location.href),chrome=document.getElementById('open-chrome');
     chrome.href='intent://'+self.host+self.pathname+'#Intent;scheme='+self.protocol.slice(0,-1)+';package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(self.href)+';end';
     chrome.hidden=false;document.getElementById('chrome-note').hidden=false;
   }

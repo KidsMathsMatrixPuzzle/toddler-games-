@@ -2,8 +2,8 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {execFileSync}=require('node:child_process');
 const {chromium,expect}=require(process.env.MM_PLAYWRIGHT||'@playwright/test');
-const root=path.resolve(__dirname,'..'),prior=process.env.PRIOR_V199?'c67324c1fa803319e572a9da33bd4c96b19d059d':'050748096331a7ab4c2c36cfa7e219c55c1ba107';
-const previous=process.env.PRIOR_V199?'sana-little-hands-live-v199-puppy-circle-r2-app-name':'sana-little-hands-live-v198-r2-distinct-app-id',target='sana-little-hands-live-v199-green-puppy-icon';
+const root=path.resolve(__dirname,'..'),prior=process.env.PRIOR_V199?'eaeba131bbb52c278fe520f7952d6fb5961ff960':'050748096331a7ab4c2c36cfa7e219c55c1ba107';
+const previous=process.env.PRIOR_V199?'sana-little-hands-live-v199-green-puppy-icon':'sana-little-hands-live-v198-r2-distinct-app-id',target='sana-little-hands-live-v199-green-safe-r2';
 const changed=new Set(['index.html','play.html','pwa.js','sw.js','manifest.webmanifest','icon.svg','icon-192.png','icon-512.png','share.js','v1.99.html','v1.98.html','update-v1.98.html','tablet-check.html','install-live-r2.html']);
 const legacy=new Map();let old=true,browser,checks=0,musicRequests=0;
 const check=(name,pass)=>{assert(pass,name);checks++;console.log('PASS '+name);};
@@ -29,7 +29,7 @@ const server=http.createServer((req,res)=>{try{
   await game.evaluate(()=>{window.promotionGameMarker='playing';});const settings=await game.evaluate(()=>localStorage.getItem('sanaLittleHandsV1'));
   old=false;await page.locator('#update-app').click();await expect(page.locator('meta[name="sana-release"]')).toHaveAttribute('content',target,{timeout:15000});
   check('Main updates to v1.99 without fetching unavailable unchanged music',musicRequests===0&&await page.locator('[data-release-version]').first().textContent()==='v1.99');
-  check('Chromium keeps the same toddler Main identity and adopts the puppy icon',(await client.send('Page.getAppManifest')).manifest.id===base&&(await client.send('Page.getAppManifest')).manifest.name==='SaNa - Toddler'&&(await client.send('Page.getAppManifest')).manifest.icons.some(icon=>icon.url.endsWith('sana-puppy-green-v199-512.png')));
+  check('Chromium keeps the same toddler Main identity and adopts the puppy icon',(await client.send('Page.getAppManifest')).manifest.id===base&&(await client.send('Page.getAppManifest')).manifest.name==='SaNa - Toddler'&&(await client.send('Page.getAppManifest')).manifest.icons.some(icon=>icon.url.endsWith('sana-puppy-green-r2-v199-512.png')));
   check('The welcome uses the approved circle and keeps SaNa',await page.locator('[data-sana-puppy]').getAttribute('href')==='sana-puppy-welcome-circle-v199.png'&&await page.locator('#welcome-title').textContent()==='SaNa Little Hands');
   check('An open puzzle keeps running',await game.evaluate(()=>window.promotionGameMarker)==='playing');
   check('Game settings survive the Main upgrade',await page.evaluate(()=>localStorage.getItem('sanaLittleHandsV1'))===settings);
